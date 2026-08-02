@@ -3,6 +3,8 @@ kind: ServiceAccount
 metadata:
   name: reporting
   namespace: payments
+automountServiceAccountToken: false
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -19,7 +21,7 @@ spec:
   template:
     metadata:
       labels:
-        app: reporting
+        app: reporting  
     spec:
       serviceAccountName: reporting
       containers:
