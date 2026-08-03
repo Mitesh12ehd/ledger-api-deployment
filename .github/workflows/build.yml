@@ -8,12 +8,16 @@ on:
 permissions:
   contents: read
   packages: write
+  id-token: write
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v4
 
       - name: Convert owner to lowercase
         run: echo "OWNER_LC=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
@@ -30,3 +34,10 @@ jobs:
           IMAGE=ghcr.io/$OWNER_LC/ledger-api:1.0
           docker build -t "$IMAGE" ./app
           docker push "$IMAGE"
+
+      - name: Sign Image
+        env:
+          COSIGN_YES: "true"
+        run: |
+          IMAGE=ghcr.io/$OWNER_LC/ledger-api:1.0
+          cosign sign "$IMAGE"
