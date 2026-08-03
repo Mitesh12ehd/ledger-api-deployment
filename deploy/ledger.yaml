@@ -25,12 +25,6 @@ spec:
         app: ledger-api
     spec:
       serviceAccountName: ledger-api-sa 
-      securityContext: 
-        runAsNonRoot: true
-        runAsUser: 10001
-        runAsGroup: 10001
-        seccompProfile:
-          type: RuntimeDefault
       containers:
         - name: ledger-api
           image: ledger-api:1.0
@@ -50,6 +44,11 @@ spec:
           ports:
             - containerPort: 8080
           securityContext:
+            runAsNonRoot: true
+            runAsUser: 10001
+            runAsGroup: 10001
+            seccompProfile:
+              type: RuntimeDefault
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities:
