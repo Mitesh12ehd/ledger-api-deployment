@@ -24,11 +24,13 @@ spec:
       labels:
         app: ledger-api
     spec:
-      serviceAccountName: ledger-api-sa 
+      serviceAccountName: ledger-api-sa
+      imagePullSecrets:
+        - name: ghcr-secret
       containers:
         - name: ledger-api
-          image: ledger-api:1.0
-          imagePullPolicy: IfNotPresent
+          image: ghcr.io/mitesh12ehd/ledger-api:1.0
+          imagePullPolicy: Always
           env:
             - name: STRIPE_API_KEY
               valueFrom:
